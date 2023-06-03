@@ -1,0 +1,10 @@
+.Container{
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    background-color: red;
+    height: 20rem;
+}
+h2{
+    padding: 1rem;
+}

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="jquery-3.6.4.min.js"></script>
+    <script src="js/funcion.js"></script>
+    <script src="css/style.css"></script>
+    <style>
+    .Container{
+        display: grid;
+        align-content: center;
+        justify-content: center;
+        background-color: whitesmoke;
+        height: 100rem;
+        padding: 1rem;
+        }
+    h2{
+        padding: 1rem;
+        }
+    label{
+        font-weight: bold;
+        }
+        .icon-select {
+  position: relative;
+  display: inline-block;
+}
+
+.icon-select select {
+  width: 200px;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  color: #333;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.icon-select i {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #333;
+}
+    </style>
+    <title>EVALUACION COTIZACION</title>
+</head>
+<body>
+<br><br><br>
+<h2>Gestión de Cotización</h2>
+<hr>
+<div class="Container">
+    <form>
+        <br>
+        <br>
+        <label class="mb-0">USUARIOS LISTADOS <br> |-Nombre--Email-| </label><br>
+        <div class="custom-select">
+            <select class="usuariosListados" class="form-select" multiple aria-label="multiple select example">
+
+
+            </select>
+        </div>
+
+
+
+        <br>
+        <br>
+        <hr>
+        <br>
+        <br>
+
+        <label class="mb-0">PRODUCTOS LISTADOS <br> |-Nombre--Precio-|</label><br>
+        <div class="custom-select">
+        <select class="seleccionPro" class="form-select" multiple aria-label="multiple select example">
+
+
+        </select>
+        </div>
+        <br>
+        <br>
+        <hr>
+        <br>
+        <br>
+
+        <label class="mb-0">COTIZACION<br>|-Fecha--USUARIO-PRODUCTO-|</label><br>
+        <select class="seleccionCot" class="form-select" multiple aria-label="multiple select example">
+
+
+        </select>
+    </form>
+    <br>
+    <br>
+    <hr>
+    <br>
+    <br>
+
+
+    <h1>Agregar Cotización</h1>
+    <form id="agregarCotizacionForm">
+        <label for="usuario">Usuario:</label>
+        <select id="usuario" name="usuario">
+            <!-- Opciones de usuario cargadas dinámicamente -->
+        </select>
+        <br>
+        <label for="producto">Producto:</label>
+        <select id="producto" name="producto">
+            <!-- Opciones de producto cargadas dinámicamente -->
+        </select>
+        <br>
+        <label for="cantidad">Cantidad Solicitada:</label>
+        <input type="number" id="cantidad" name="cantidad" required>
+        <br>
+        <label for="moneda">Moneda:</label>
+        <input type="text" id="moneda" name="moneda" required>
+        <br>
+        <label for="fecha">Fecha:</label>
+        <input type="text" id="fecha" name="fecha" required>
+        <br>
+        <button type="submit">Agregar Cotización</button>
+    </form>
+
+    <h1>Actualizar Cotización</h1>
+    <form id="actualizarCotizacionForm">
+        <label for="cotizacionIdUpdate">ID Cotización:</label>
+        <input type="text" id="cotizacionIdUpdate" name="cotizacionId" required>
+        <br>
+        <label for="usuarioUpdate">Usuario:</label>
+        <select id="usuarioUpdate" name="usuario">
+            <!-- Opciones de usuario cargadas dinámicamente -->
+        </select>
+        <br>
+        <label for="productoUpdate">Producto:</label>
+        <select id="productoUpdate" name="producto">
+            <!-- Opciones de producto cargadas dinámicamente -->
+        </select>
+        <br>
+        <label for="cantidadUpdate">Cantidad Solicitada:</label>
+        <input type="number" id="cantidadUpdate" name="cantidad" required>
+        <br>
+        <label for="monedaUpdate">Moneda:</label>
+        <input type="text" id="monedaUpdate" name="moneda" required>
+        <br>
+        <label for="fechaUpdate">Fecha:</label>
+        <input type="text" id="fechaUpdate" name="fecha" required>
+        <br>
+        <button type="submit">Actualizar Cotización</button>
+    </form>
+    <h1>Eliminar Cotización</h1>
+    <form id="eliminarCotizacionForm">
+        <label for="cotizacionIdDelete">ID Cotización:</label>
+        <input type="text" id="cotizacionIdDelete" name="cotizacionId" required>
+        <br>
+        <button type="submit">Eliminar Cotización</button>
+    </form>
+
+    <script>
+        $(document).ready(function() {
+            // Obtener la lista de usuarios y cargar las opciones en el select
+            $.ajax({
+                url: "http://localhost:8080/ListarUsuarios",
+                type: "GET",
+                dataType: "JSON",
+                success: function(response) {
+                    var usuariosListados = $("#usuario");
+                    usuariosListados.empty();
+                    usuariosListados.append("<option value=''>Seleccione un usuario</option>");
+                    Object.values(response).forEach(usuario => {
+                        usuariosListados.append(
+                            '<option value="' + usuario['idUsuario'] + '">' +
+                            usuario['nombre'] + ' -- ' + usuario['email'] +
+                            '</option>'
+                        );
+                    });
+                }
+            });
+
+            // Obtener la lista de productos y cargar las opciones en el select
+            $.ajax({
+                url: "http://localhost:8080/Listarproductos",
+                type: "GET",
+                dataType: "JSON",
+                success: function(response) {
+                    var seleccionPro = $("#producto");
+                    seleccionPro.empty();
+                    seleccionPro.append("<option value=''>Seleccione un producto</option>");
+                    Object.values(response).forEach(producto => {
+                        seleccionPro.append(
+                            '<option value="' + producto['codigo_producto'] + '">' +
+                            producto['nombre'] + ' -- $' + producto['precio'] + ' COP ' +
+                            '</option>'
+                        );
+                    });
+                }
+            });
+
+            // Enviar el formulario al hacer submit
+            $("#agregarCotizacionForm").on("submit", function(e) {
+                e.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: "http://localhost:8080/Agregarcotizacion",
+                    type: "POST",
+                    data: formData,
+                    success: function(response) {
+                        alert("Cotización agregada exitosamente.");
+                        // Restablecer el formulario
+                        $("#agregarCotizacionForm")[0].reset();
+                    },
+                    error: function(error) {
+                        alert("Error al agregar la cotización.");
+                    }
+                });
+            });
+
+            // Enviar el formulario al hacer submit
+            $("#actualizarCotizacionForm").on("submit", function(e) {
+                e.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: "http://localhost:8080/ActualizarCotizacion",
+                    type: "PUT",
+                    data: formData,
+                    success: function(response) {
+                        alert("Cotización actualizada exitosamente.");
+                        // Restablecer el formulario
+                        $("#actualizarCotizacionForm")[0].reset();
+                    },
+                    error: function(error) {
+                        alert("Error al actualizar la cotización.");
+                    }
+                });
+            });
+
+            // Enviar el formulario al hacer submit
+            $("#eliminarCotizacionForm").on("submit", function(e) {
+                e.preventDefault();
+                var cotizacionId = $("#cotizacionId").val();
+                $.ajax({
+                    url: "http://localhost:8080/EliminarCotizacion/" + cotizacionId,
+                    type: "DELETE",
+                    success: function(response) {
+                        alert("Cotización eliminada exitosamente.");
+                        // Restablecer el formulario
+                        $("#eliminarCotizacionForm")[0].reset();
+                    },
+                    error: function(error) {
+                        alert("Error al eliminar la cotización.");
+                    }
+                });
+            });
+        });
+    </script>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+</body>
+</html>
